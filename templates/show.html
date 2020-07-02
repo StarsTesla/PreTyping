@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>search</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/search.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/product.css">
+	</head>
+
+<style>
+    #result span {
+        letter-spacing: 10px;
+        padding-left: 0;
+        display: flex;
+        justify-items: left;
+        animation-name: he;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+    }
+    .search-input{
+        animation-name: sinput;
+        animation-duration: 1.6s;
+        animation-fill-mode: forwards;
+
+    }
+    /* .search-box{
+        animation-name: sinputbox;
+        animation-duration: 1.6s;
+        animation-fill-mode: forwards;
+
+    } */
+    .search-btn{
+        animation-name: btn;
+        animation-duration: 1.6s;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes he {
+        from {
+            transform: translateY(0px);
+            opacity: 0;
+            transition: ease;
+            transition-delay: 1s;
+        }
+
+        to {
+            transform: translateY(30px);
+            opacity: 1;
+            transition: ease;
+            transition-delay: 1s;
+        }
+    }
+    @keyframes sinput{
+        from{
+            width: 0px;
+            opacity: 0;
+            transition: ease;
+            transition-delay: 1s;
+        }
+        to{
+            width: 260px;
+            opacity: 1;
+            transition: ease;
+            transition-delay: 1s;
+        }
+    }
+    @keyframes btn{
+        from{
+            transform: translateX(0px);
+            opacity: 0;
+            transition: ease;
+            transition-delay: 1s;
+
+        }
+        to{
+            -webkit-transform: translateX(0px);
+            opacity: 1;
+            transition: ease;
+            transition-delay: 1s;
+        }
+    }
+    /* @keyframes sinputbox{
+        from{
+            width: 0px;
+            opacity: 0;
+            transition: ease;
+
+        }
+        to{
+            width: 320px;
+            opacity: 0.7;
+            transition: ease;
+        }
+    } */
+</style>
+
+	<body>
+		<div class="search-box">
+			<input class="search-input" type="text" placeholder="Type to search" id="keyword" >
+			<a class="search-btn" href="#" data-toggle="">
+				<img src="/static/images/type.png">
+			</a>
+		</div>
+        <div id="result">
+
+        </div>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script>
+    $("#keyword").bind('input propertychange', function(){
+    var keyword = $(this).val();
+    $.ajax({
+        url: 'ajax/getSuggestions/',
+        data: {'keyword': keyword},
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+        console.log(data);
+        var strhtml="";
+        strhtml +='<span class="sbtn">'+data.suggestions[0]+'</span>'
+                + '&nbsp;&nbsp;<span class="sbtn">'+data.suggestions[1]+'</span>'
+                + '&nbsp;&nbsp;<span class="sbtn">'+data.suggestions[2]+'</span>'
+                + '&nbsp;&nbsp;<span class="sbtn">'+data.suggestions[3]+'</span>'
+                + '&nbsp;&nbsp;<span class="sbtn">'+data.suggestions[4]+'</span>';
+
+        $("#result").html(strhtml);
+        },
+
+        });
+        });
+        $(document).ready(function(){
+            $("#result").on("click",".sbtn",function(e){
+                var result = $("#result span");
+                h=$(this).text();
+                console.log(h);
+                var $input = $("#keyword");
+                $input.val($input.val()+ h);
+				$($input).trigger("input");
+            })
+        })
+</script>
+
+
+	</body>
+
+</html>
